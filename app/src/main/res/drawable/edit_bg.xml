@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--solid里是背景的填充颜色，transparent是透明-->
+    <solid android:color="#FFFFFF"/>
+    <!--
+    corners里的属性，是四个边角拐角的大小
+    topLeftRadius：左上角
+    topRightRadius：右上角
+    bottomRightRadius：右下角
+    bottomLeftRadius：左下角
+    -->
+    <corners android:radius="10dp" />
+    <!--stroke里是边框的宽度和颜色-->
+    <stroke
+        android:width="1dp"
+        android:color="#DDDDDD"
+        />
+</shape>

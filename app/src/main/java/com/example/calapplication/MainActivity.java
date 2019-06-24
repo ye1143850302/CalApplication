@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn_multiply ;
     Button btn_divide ;
     Button btn_equle ;
-    EditText et_input ;
+    EditText et_input ;//显示结果
     boolean clear_flag ;//清空标识
 
     @Override
@@ -74,8 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View v) {
-        String str = et_input.getText().toString();
+    public void onClick(View v) {//完成监听
+        String str = et_input.getText().toString();//获取文本框的文本
         switch (v.getId()) {
             case R.id.btn_0:
             case R.id.btn_1:
@@ -88,39 +88,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_8:
             case R.id.btn_9:
             case R.id.btn_point:
-                if (clear_flag) {
+                if (clear_flag) {//若清除标志位为1
                     clear_flag =false ;
-                    str ="" ;
+                    str ="" ;//将文本框的文本置为空
                     et_input.setText("");
                 }
-                et_input.setText(str + ((Button)v).getText());
+                et_input.setText(str + ((Button)v).getText());//如果清除标志不为1 则获取button上的数字文本
                 break ;
             case R.id.btn_pluse:
             case R.id.btn_minus:
             case R.id.btn_multiply:
             case R.id.btn_divide:
-                if (clear_flag) {
+                if (clear_flag) {//若清除标志位为1
                     clear_flag =false ;
                     str ="" ;
                     et_input.setText("");
-                }
-                et_input.setText(str+ " " + ((Button)v).getText()+" ");
+                }//将文本框的文本置为空
+                et_input.setText(str+ " " + ((Button)v).getText()+" ");//如果清除标志不为1 则获取button上的符号文本
                 break;
             case R.id.btn_del:
                 if (clear_flag) {
                     clear_flag =false ;
                     str ="" ;
                     et_input.setText("");
-                }else if (str!=null&&!str.equals("")){
-                    et_input.setText(str.substring(0,str.length()-1));
+                }else if (str!=null&&!str.equals("")){//如果文本中不为空且为数字时候此时删除
+                    et_input.setText(str.substring(0,str.length()-1));//将文本中的文本长度减一 并将减去的数字置为0
                 }
                 break;
             case R.id.btn_clear:
                 clear_flag =false ;
-                str ="" ;
+                str ="" ;//若按下的键是清除键，则将清除标志置为false 且将文本置为空
                 et_input.setText("");
             case R.id.btn_equal:
-                getResult();
+                getResult();//若按下的键为=调用计算函数
                 break ;
 
         }
@@ -129,56 +129,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *
      *
      * */
-    private void getResult(){
-        String exp = et_input.getText().toString();
+    private void getResult(){//计算函数
+        String exp = et_input.getText().toString();//获取当前文本的数据
         if (exp == null||exp.equals("")){
             return;
         }
-        if(!exp.contains(" ")) {
+        if(!exp.contains(" ")) {//判断字符串中是否有子字符串
             return;
         }
         if (clear_flag){
             clear_flag = false ;
-            return;
+            return;//当前文本为空，返回空
+            //若此时的清零标志为true 则重置 返回空
 
         }
-        clear_flag = true ;
+        clear_flag = true ;//重置清零位
         double result = 0 ;
-        String s1 = exp.substring(0,exp.indexOf(" ")); //运算符前面的字符串
-        String op = exp.substring(exp.indexOf(" ")+1,exp.indexOf(" ")+2) ;
-        String s2 = exp.substring(exp.indexOf(" ")+3) ;
-        if (!s1.equals(" ")&&!s2.equals(" ")){
+        String s1 = exp.substring(0,exp.indexOf(" ")); //第一个参数int为开始的索引，对应String数字中的开始位置，
+       // 第二个参数是截止的索引位置，对应String中的结束位置  此处获取第一位操作数
+        String op = exp.substring(exp.indexOf(" ")+1,exp.indexOf(" ")+2) ;//运算符
+        String s2 = exp.substring(exp.indexOf(" ")+3) ;//获取第二位操作数
+        if (!s1.equals(" ")&&!s2.equals(" ")){//当两位操作数均不为空时
             double d1 = Double.parseDouble(s1) ;
-            double d2 = Double.parseDouble(s2) ;
+            double d2 = Double.parseDouble(s2) ;//将数字转换为double
             if (op.equals("+")){
-                result = d1 + d2 ;
+                result = d1 + d2 ;//如果操作符为+
 
             }else  if (op.equals("-")){
-                result = d1 - d2 ;
+                result = d1 - d2 ;//如果操作符为-
 
             }else  if (op.equals("*")){
-                result = d1 * d2 ;
+                result = d1 * d2 ;//如果操作符为*
 
-            }else  if (op.equals("/")){
+            }else  if (op.equals("/")){////如果操作符为/
                 if(d2 == 0){
                     result = 0 ;
                 }else {
                     result = d1/d2 ;
                 }
             }
-            if (s1.contains(".")&&s2.contains(".")) {
-                int r = (int) result;
-                et_input.setText(r+"");
+            if (s1.contains(".")&&s2.contains(".")) {//若两个操作数都含有小数点
+                int r = (int) result;//将double类型的结果转换为int
+                et_input.setText(r+"");//文本先显示整数部分
             }else {
-                et_input.setText(result+"");
+                et_input.setText(result+"");//若仅有一个或两个操作数均不含小数，直接显示double结果
 
             }
-        }else if (!s1.equals("")&&s2.equals("")){
-            et_input.setText(exp);
-        }else if (s1.equals("")&&!s2.equals("")){
+        }//两个数字均不为空的情况结束
+
+        else if (!s1.equals("")&&s2.equals("")){//当第一个操作数为不为空 第二个操作数为空时
+            et_input.setText(exp);//直接返回该第一个操作数字
+        }//第一个操作数不为空 第二个操作数为空的情况结束
+
+        else if (s1.equals("")&&!s2.equals("")){//当第一个操作数为空  第二个操作数不为空
             double d2 = Double.parseDouble(s2) ;
             if (op.equals("+")){
-                result = 0 + d2 ;
+                result = 0 + d2 ;//根据操作符加减乘除
 
             }else  if (op.equals("-")){
                 result = 0 - d2 ;
@@ -189,14 +195,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }else  if (op.equals("/")){
                 result = 0 ;
             }
-            if (s2.contains(".")) {
-                int r = (int) result;
-                et_input.setText(r+"");
+            if (s2.contains(".")) {//如果第一个操作数为空，第二个操作数包含有小数点
+                int r = (int) result;//将结果先整数化
+                et_input.setText(r+"");//先显示这个整数部分
             }else {
-                et_input.setText(result+"");
+                et_input.setText(result+"");//若不含小数部分直接显示结果
             }
-        }else {
-            et_input.setText("");
+        }//当第一个操作位数字为空 第二个操作数字不为空的情况结束
+
+        else {
+            et_input.setText("");//均不属于以上情况
 
         }
     }

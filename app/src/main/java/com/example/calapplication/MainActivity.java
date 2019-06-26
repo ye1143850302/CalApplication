@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        // 第二个参数是截止的索引位置，对应String中的结束位置  此处获取第一位操作数
         String op = exp.substring(exp.indexOf(" ")+1,exp.indexOf(" ")+2) ;//运算符
         String s2 = exp.substring(exp.indexOf(" ")+3) ;//获取第二位操作数
-        if (!s1.equals(" ")&&!s2.equals(" ")){//当两位操作数均不为空时
+        if (!s1.equals("")&&!s2.equals("")){//当两位操作数均不为空时
             double d1 = Double.parseDouble(s1) ;
             double d2 = Double.parseDouble(s2) ;//将数字转换为double
             if (op.equals("+")){
@@ -168,17 +168,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     result = d1/d2 ;
                 }
             }
-            if (s1.contains(".")&&s2.contains(".")) {//若两个操作数都含有小数点
-                int r = (int) result;//将double类型的结果转换为int
-                et_input.setText(r+"");//文本先显示整数部分
-            }else {
-                et_input.setText(result+"");//若仅有一个或两个操作数均不含小数，直接显示double结果
-
-            }
+            et_input.setText(result+"");
         }//两个数字均不为空的情况结束
 
         else if (!s1.equals("")&&s2.equals("")){//当第一个操作数为不为空 第二个操作数为空时
-            et_input.setText(exp);//直接返回该第一个操作数字
+            //et_input.setText(exp);//直接返回该第一个操作数字
+            double d1 = Double.parseDouble(s1) ;
+            if (op.equals("+")){
+                result = d1 ;//根据操作符加减乘除
+            }else  if (op.equals("-")){
+                result = d1;
+            }else  if (op.equals("*")){
+                result = d1 ;
+            }else  if (op.equals("/")){
+                result = d1;
+            }
+            et_input.setText(result+"");
         }//第一个操作数不为空 第二个操作数为空的情况结束
 
         else if (s1.equals("")&&!s2.equals("")){//当第一个操作数为空  第二个操作数不为空
@@ -195,18 +200,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }else  if (op.equals("/")){
                 result = 0 ;
             }
-            if (s2.contains(".")) {//如果第一个操作数为空，第二个操作数包含有小数点
-                int r = (int) result;//将结果先整数化
-                et_input.setText(r+"");//先显示这个整数部分
-            }else {
-                et_input.setText(result+"");//若不含小数部分直接显示结果
-            }
+            et_input.setText(result+"");
         }//当第一个操作位数字为空 第二个操作数字不为空的情况结束
 
-        else {
-            et_input.setText("");//均不属于以上情况
-
-        }
     }
 }
 
